@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Player Move Srtting")]
-    [SerializeField] private float _moveSpeed = 5f; // 이동 속도
+    [Header("Stats")]
+    [SerializeField] private PlayerStats _playerStats;
 
     private Rigidbody2D _rigid;
     private Vector2 _moveInput;
@@ -24,6 +23,12 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
+
+        // 스텟 초기화
+        if( _playerStats != null)
+        {
+            _playerStats.Init();
+        }
 
         // 상태 머신 생성
         _playerStateMachine = new PlayerStateMachine();
@@ -64,7 +69,7 @@ public class PlayerController : MonoBehaviour
     // 실제 이동
     public void MoveVelocity()
     {
-        _rigid.velocity = _moveInput * _moveSpeed;
+        _rigid.velocity = _moveInput * _playerStats.MoveSpeed;
     }
 
     // 이동 정지
