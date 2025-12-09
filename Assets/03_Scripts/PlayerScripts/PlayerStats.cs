@@ -18,9 +18,10 @@ public class PlayerStats : IDamagable
     } 
 
     // 이동 속도
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _moveSpeed = 5f;
     public float MoveSpeed => _moveSpeed;
 
+    // 죽음 여부
     public bool IsDead => CurrentHp <= 0;
 
     // 초기화

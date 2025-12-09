@@ -4,28 +4,35 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Stats Setting")]
     [SerializeField] private PlayerStats _playerStats;
+
+    [Header("Gun Setting")]
+    [SerializeField] private GunController _gunController;
 
     private Rigidbody2D _rigid;
     private Vector2 _moveInput;
     private PlayerStateMachine _playerStateMachine;
 
-    // 입력 방향 프로퍼티 
+    // 입력 프로퍼티 
     public Vector2 MoveInput => _moveInput;
-    // 이동 체크 프로퍼티
     public bool HasMoveInput => _moveInput.sqrMagnitude > 0.01f;
+    public bool AttackInput { get; private set; }
 
     // 상태 인스턴스 보관
     public PlayerIdleState PlayerIdleState { get; private set; }
     public PlayerMoveState PlayerMoveState { get; private set; }
+    public PlayerAttackState PlayerAttackState { get; private set; }
+
+    // 무기의 공격 딜레이
+    public float AttackDelay => _gunController.AttackDelay;
 
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
 
         // 스텟 초기화
-        if( _playerStats != null)
+        if ( _playerStats != null)
         {
             _playerStats.Init();
         }
@@ -36,6 +43,7 @@ public class PlayerController : MonoBehaviour
         // 상태 인스턴스 생성하면서 데이터 넘겨주기
         PlayerIdleState = new PlayerIdleState(this, _playerStateMachine);
         PlayerMoveState = new PlayerMoveState(this, _playerStateMachine);
+        PlayerAttackState = new PlayerAttackState(this, _playerStateMachine);
     }
 
     private void Start()
@@ -46,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        ReadInput();
+        PlayerMoveInput();
 
         _playerStateMachine.Update();
     }
@@ -56,18 +64,21 @@ public class PlayerController : MonoBehaviour
         _playerStateMachine.FixedUpdate();
     }
 
-    // 키보드 입력
-    private void ReadInput()
+    // 플레이어 이동 입력
+    private void PlayerMoveInput()
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
         // 입력 벡터 정규화
         _moveInput = new Vector2(x, y).normalized;
+
+        // 공격 입력
+        AttackInput = Input.GetMouseButtonDown(0);
     }
 
-    // 실제 이동
-    public void MoveVelocity()
+    // 플레이어 이동
+    public void PlayerMove()
     {
         _rigid.velocity = _moveInput * _playerStats.MoveSpeed;
     }
@@ -76,5 +87,11 @@ public class PlayerController : MonoBehaviour
     public void StopMove()
     {
         _rigid.velocity = Vector2.zero;
+    }
+
+    // 총알 발사 처리
+    public void Fire()
+    {
+        _gunController?.BulletFireInput();
     }
 }
