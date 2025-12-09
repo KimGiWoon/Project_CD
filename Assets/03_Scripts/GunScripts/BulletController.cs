@@ -12,6 +12,14 @@ public class BulletController : MonoBehaviour
     private int _bulletDamage;
     private float _timer;
 
+    private BulletPoolManager _bulletPool;
+
+    // 반환 풀 지정
+    public void SetPool(BulletPoolManager bulletPool)
+    {
+        _bulletPool = bulletPool;
+    }
+
     // 총알 생성시 초기화
     public void Init(Vector2 direction, float speed, int damage)
     {
@@ -32,9 +40,8 @@ public class BulletController : MonoBehaviour
 
         if( _timer >= _bulletLifeTime)
         {
-            // 생성 시간 지나면 총알 삭제
-            // TODO: 추후 Object Pool로 반환
-            Destroy(gameObject);
+            // 생성 시간 지나면 총알 반납
+            _bulletPool.ReturnBullet(this);
         }
     }
 
@@ -45,10 +52,10 @@ public class BulletController : MonoBehaviour
         {
             // 대상에 데미지 주기
             damagable.TakeDamage(_bulletDamage);
+
         }
 
-        // 충돌 후 총알 삭제
-        // TODO: 추후 Object Pool로 반환
-        Destroy(gameObject);
+        // 충돌 후 총알 반환
+        _bulletPool?.ReturnBullet(this);
     }
 }

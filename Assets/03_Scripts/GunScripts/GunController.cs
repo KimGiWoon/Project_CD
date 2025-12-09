@@ -36,26 +36,6 @@ public class GunController : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-    //    GunAimTowardMouse();
-    //}
-
-    //// 총 마우스 방향 회전
-    //private void GunAimTowardMouse()
-    //{
-    //    if (Camera.main == null) return;
-
-    //    // 마우스 방향 계산
-    //    Vector2 mouseDir = GetMouseDirection();
-
-    //    // 마우스 방향으로 각도 변환
-    //    float gunAngle = Mathf.Atan2(mouseDir.y, mouseDir.x) * Mathf.Rad2Deg;
-
-    //    // Z축 회전
-    //    transform.rotation = Quaternion.Euler(0f, 0f, gunAngle);
-    //}
-
     // 총알 발사 입력
     public void BulletFireInput()
     {
@@ -65,8 +45,15 @@ public class GunController : MonoBehaviour
         // 발사 방향 계산
         Vector2 fireDir = GetMouseDirection();
 
-        // 총알 생성
-        GameObject bullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
+        // 풀에서 총알 꺼내오기
+        BulletController bullet = BulletPoolManager.Instance.GetBullet();
+
+        // 총알이 없으면 실행하지 않음
+        if (bullet == null) return;
+
+        // 총알의 위치와 회전 세팅
+        bullet.transform.position = _firePoint.position;
+        bullet.transform.rotation = _firePoint.rotation;
 
         // 총알 공격력 초기화
         if (bullet.TryGetComponent<BulletController>(out var bulletDamage))
@@ -104,6 +91,7 @@ public class GunController : MonoBehaviour
 
         // 플래시 생성 위치를 총구 방향으로 설정
         Quaternion flashRotation = Quaternion.FromToRotation(Vector2.right, dir);
+
         GameObject flash = Instantiate(_muzzleFlashPrefab, _firePoint.position, flashRotation);
 
         // 일정 시간 뒤 파괴

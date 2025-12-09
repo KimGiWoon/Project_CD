@@ -23,15 +23,11 @@ public class AimPivotController : MonoBehaviour
         // 마우스 좌표
         Vector3 mouseScreenPosition = Input.mousePosition;
 
-        // 피벗까지 거리 세팅
-        float dist = Mathf.Abs(_camera.transform.position.z - transform.position.z);
-        mouseScreenPosition.z = dist;
-
-        // 월드 좌표 세팅
+        // 월드 좌표 변환
         Vector3 mouseWorldPosition = _camera.ScreenToWorldPoint(mouseScreenPosition);
         mouseWorldPosition.z = transform.position.z;
 
-        // 피벗과 마우스 방향 확인
+        // 피벗 중심점과 마우스 방향 확인
         Vector2 aimDir = (mouseWorldPosition - transform.position).normalized;
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
