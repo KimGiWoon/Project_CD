@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     [Header("Stats Setting")]
     [SerializeField] private PlayerStats _playerStats;
@@ -93,5 +93,24 @@ public class PlayerController : MonoBehaviour
     public void Fire()
     {
         _gunController?.BulletFireInput();
+    }
+
+    // 데미지 받음
+    public void TakeDamage(int damage)
+    {
+        _playerStats.CurrentHp -= damage;
+
+        // 현재 체력이 0이면 죽음
+        if (_playerStats.CurrentHp <= 0)
+        {
+            _playerStats._isDead = true;
+            Death();
+        }
+    }
+
+    // 죽음
+    private void Death()
+    {
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerStats : IDamagable
+public class PlayerStats
 {
     // 최대 체력
     [SerializeField] private int _maxHp = 6;
@@ -14,7 +14,7 @@ public class PlayerStats : IDamagable
     public int CurrentHp 
     { 
         get => _currentHp; 
-        private set => _currentHp = Mathf.Clamp(value, 0, _maxHp); 
+        set => _currentHp = Mathf.Clamp(value, 0, _maxHp); 
     } 
 
     // 이동 속도
@@ -22,28 +22,12 @@ public class PlayerStats : IDamagable
     public float MoveSpeed => _moveSpeed;
 
     // 죽음 여부
-    public bool IsDead => CurrentHp <= 0;
+    public bool _isDead;
 
     // 초기화
     public void Init()
     {
         CurrentHp = _maxHp;
-    }
-
-    // 데미지 받음
-    public void TakeDamage(int damage)
-    {
-        CurrentHp -= damage;
-
-        if(IsDead)
-        {
-            Death();
-        }
-    }
-
-    // 죽음
-    public void Death()
-    {
-        
+        _isDead = false;
     }
 }

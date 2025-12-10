@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponData", menuName = "DataSO/Weapon Data")]
+[CreateAssetMenu(fileName = "WeaponData", menuName = "DataSO/Weapon_Data")]
 public class WeaponDataSO : ScriptableObject
 {
     [Header("Weapon Data")]
@@ -15,7 +15,6 @@ public class WeaponDataSO : ScriptableObject
     [SerializeField] private float _attackDuration;
     [SerializeField] private float _camShakeDuration;
     [SerializeField] private float _camShakeMagnitude;
-
 
     public string Id => _id;
     public string Name => _name;
