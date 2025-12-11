@@ -11,14 +11,11 @@ public class EnemyController : MonoBehaviour, IDamagable
     [SerializeField] private Transform _traceTarget;
     [SerializeField] private float _traceInterval = 0.1f;
 
-    [Header("Attack Setting")]
-    [SerializeField] private float _attackCooltime = 1f;
-
     // 스탯 데이터
     private int _currentHp;
     private float _moveSpeed;
-    private float _attackDamage;
-    private float _attackDuration;
+    private int _attackDamage;
+    private float _attackCoolTime;
     private float _attackRange;
     private float _traceRange;
 
@@ -36,7 +33,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float TraceRangeSqr => _traceRange * _traceRange;
 
     public Transform Target => _traceTarget;
-    public float AttackCoolTime => _attackCooltime;
+    public int AttackDamage => _attackDamage;
 
     // 상태 인스턴스 보관
     public EnemyIdleState EnemyIdleState { get; private set; }
@@ -77,8 +74,8 @@ public class EnemyController : MonoBehaviour, IDamagable
             // 기본값 적용
             _currentHp = 1;
             _moveSpeed = 1f;
-            _attackDamage = 1f;
-            _attackDuration = 2f;
+            _attackDamage = 1;
+            _attackCoolTime = 1f;
             _attackRange = 1f;
             _traceRange = 1f;
 
@@ -88,7 +85,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         _currentHp = _enemyDataSO.MaxHp;
         _moveSpeed = _enemyDataSO.MoveSpeed;
         _attackDamage = _enemyDataSO.AttackDamage;
-        _attackDuration = _enemyDataSO.AttackDuration;
+        _attackCoolTime = _enemyDataSO.AttackCoolTime;
         _attackRange = _enemyDataSO.AttackRange;
         _traceRange = _enemyDataSO.TraceRange;
     }
@@ -102,7 +99,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         // 상태 인스턴스 생성하면서 데이터 넘겨주기
         EnemyIdleState = new EnemyIdleState(this, _enemyStateMachine);
         EnemyTraceState = new EnemyTraceState(this, _enemyStateMachine);
-        EnemyAttackState = new EnemyAttackState(this, _enemyStateMachine, _attackDuration);
+        EnemyAttackState = new EnemyAttackState(this, _enemyStateMachine, _attackCoolTime);
         EnemyDeadState = new EnemyDeadState(this, _enemyStateMachine);
         EnemyPatrolState = new EnemyPatrolState(this, _enemyStateMachine);
     }
@@ -164,6 +161,16 @@ public class EnemyController : MonoBehaviour, IDamagable
         // 타겟으로 이동
         Vector2 traceDir = GetTargetPos();
         _rigid.velocity = traceDir * _moveSpeed;
+    }
+
+    // 타겟과 거리 제곱값
+    public float GetTargetDistanceSqr()
+    {
+        // 타겟이 없으면 무한값 반환
+        if (_traceTarget == null) return Mathf.Infinity;
+
+        Vector2 diff = _traceTarget.position - transform.position;
+        return diff.sqrMagnitude;
     }
 
     // 임의의 방향으로 이동

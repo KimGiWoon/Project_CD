@@ -12,8 +12,8 @@ public class EnemyDataSO : ScriptableObject
     [Header("Enemy Stat Setting")]
     [SerializeField] private int _maxHp;
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _attackDamage;
-    [SerializeField] private float _attackDuration;
+    [SerializeField] private int _attackDamage;
+    [SerializeField] private float _attackCoolTime;
     [SerializeField] private float _attackRange;
     [SerializeField] private float _traceRange;
     [SerializeField] private EnemyType _enemyType;
@@ -22,21 +22,21 @@ public class EnemyDataSO : ScriptableObject
     public string Name => _name;
     public int MaxHp => _maxHp;
     public float MoveSpeed => _moveSpeed;
-    public float AttackDamage => _attackDamage;
-    public float AttackDuration => _attackDuration;
+    public int AttackDamage => _attackDamage;
+    public float AttackCoolTime => _attackCoolTime;
     public float AttackRange => _attackRange;
     public float TraceRange => _traceRange;
     public EnemyType EnemyType => _enemyType;
 
     // CSV 파싱 데이터 세팅
-    public void ApplyCSVdata(string id, string name, int maxHp, float moveSpeed, float attackDamage, float attackDuration, float attackRange, float traceRange, EnemyType type)
+    public void ApplyCSVdata(string id, string name, int maxHp, float moveSpeed, int attackDamage, float attackCoolTime, float attackRange, float traceRange, EnemyType type)
     {
         _id = id;
         _name = name;
         _maxHp = maxHp;
         _moveSpeed = moveSpeed;
         _attackDamage = attackDamage;
-        _attackDuration = attackDuration;
+        _attackCoolTime = attackCoolTime;
         _attackRange = attackRange;
         _traceRange = traceRange;
         _enemyType = type;

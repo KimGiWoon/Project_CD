@@ -15,6 +15,13 @@ public class EnemyTraceState : EnemyBaseState
 
     public override void Update()
     {
+        // 죽으면 DeadState 상태로 전환
+        if (_enemyContoller.IsDead)
+        {
+            _enemyStateMachine.ChangeState(_enemyContoller.EnemyDeadState);
+            return;
+        }
+
         // 추적하던 타겟이 없거나 추적을 할 수 없으면 PatrolState 상태로 전환
         if (!_enemyContoller.HasTarget || !_enemyContoller.IsTracePossible())
         {
@@ -35,6 +42,6 @@ public class EnemyTraceState : EnemyBaseState
 
     public override void Exit()
     {
-        _enemyContoller.MoveStop();
+
     }
 }
