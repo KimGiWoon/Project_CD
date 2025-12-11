@@ -24,6 +24,13 @@ public class EnemyPatrolState : EnemyBaseState
 
     public override void Update()
     {
+        // 죽으면 DeadState 상태로 전환
+        if (_enemyContoller.IsDead)
+        {
+            _enemyStateMachine.ChangeState(_enemyContoller.EnemyDeadState);
+            return;
+        }
+
         // 타겟이 있고 추적이 가능하면 TraceState로 상태 전환
         if (_enemyContoller.HasTarget && _enemyContoller.IsTracePossible())
         {
