@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 580365016139930818, guid: e0a4a73daeec45c469341e0a66b4752a, type: 3}
-  _InitialBulletCount: 6
+  _InitialBulletCount: 10
   _poolExpandable: 1
   _bulletStorageBox: {fileID: 910969366}
 --- !u!1 &519420028
@@ -845,7 +845,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.032395888, g: 0.9811321, b: 0.48355895, a: 1}
+  m_Color: {r: 0.98039216, g: 0.9564728, b: 0.031372555, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

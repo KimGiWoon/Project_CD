@@ -1,3 +1,3 @@
-﻿Id, Name, MaxHp, MoveSpeed, AttackDamage, AttackRange, TraceRange, Type
-Slime, 슬라임, 5, 1, 1, 1.5, 4, Melee
-Bat,박쥐,5,2,1,2,5, Ranged
+﻿Id, Name, MaxHp, MoveSpeed, AttackDamage, AttaclDuration AttackRange, TraceRange, Type
+Slime, 슬라임, 5, 1, 1, 2, 1.5, 4, Melee
+Bat,박쥐,5, 2, 1, 3, 2, 5, Ranged

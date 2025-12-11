@@ -22,12 +22,11 @@ public class PlayerStats
     public float MoveSpeed => _moveSpeed;
 
     // 죽음 여부
-    public bool _isDead;
+    public bool IsDead => CurrentHp <= 0;
 
     // 초기화
     public void Init()
     {
         CurrentHp = _maxHp;
-        _isDead = false;
     }
 }
