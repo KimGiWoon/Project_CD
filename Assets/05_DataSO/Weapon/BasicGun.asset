@@ -16,6 +16,6 @@ MonoBehaviour:
   _name: "\uAE30\uBCF8 \uAD8C\uCD1D"
   _bulletDamage: 1
   _bulletSpeed: 10
-  _attackDuration: 0.5
+  _attackDuration: 0.1
   _camShakeDuration: 0.05
   _camShakeMagnitude: 0.15

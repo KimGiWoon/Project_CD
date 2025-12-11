@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public PlayerIdleState PlayerIdleState { get; private set; }
     public PlayerMoveState PlayerMoveState { get; private set; }
     public PlayerAttackState PlayerAttackState { get; private set; }
+    public PlayerDeadState PlayerDeadState { get; private set; }
 
     // 무기의 공격 딜레이
     public float AttackDelay => _gunController.AttackDelay;
@@ -37,6 +38,13 @@ public class PlayerController : MonoBehaviour, IDamagable
             _playerStats.Init();
         }
 
+        // 상태 머신 초기화
+        InitStateMachine();
+    }
+
+    // 상태 머신 초기화
+    private void InitStateMachine()
+    {
         // 상태 머신 생성
         _playerStateMachine = new PlayerStateMachine();
 
@@ -44,6 +52,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         PlayerIdleState = new PlayerIdleState(this, _playerStateMachine);
         PlayerMoveState = new PlayerMoveState(this, _playerStateMachine);
         PlayerAttackState = new PlayerAttackState(this, _playerStateMachine);
+        PlayerDeadState = new PlayerDeadState(this, _playerStateMachine);
     }
 
     private void Start()
@@ -54,6 +63,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Update()
     {
+        if (_playerStats.IsDead) return;
+
         PlayerMoveInput();
 
         _playerStateMachine.Update();
@@ -61,6 +72,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void FixedUpdate()
     {
+        if (_playerStats.IsDead) return;
+
         _playerStateMachine.FixedUpdate();
     }
 
@@ -99,11 +112,11 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void TakeDamage(int damage)
     {
         _playerStats.CurrentHp -= damage;
+        Debug.Log($"플레이어가 공격을 받았습니다! 남은 체력 : {_playerStats.CurrentHp}/{_playerStats.MaxHp}");
 
-        // 현재 체력이 0이면 죽음
-        if (_playerStats.CurrentHp <= 0)
+        // 플레이어 죽음
+        if (_playerStats.IsDead)
         {
-            _playerStats._isDead = true;
             Death();
         }
     }
@@ -111,6 +124,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     // 죽음
     private void Death()
     {
-
+        // DeadState 상태로 전환
+        _playerStateMachine.ChangeState(PlayerDeadState);
     }
 }

@@ -67,9 +67,10 @@ public static class EnemyCSVImporter
             int maxHp = CSVParseUtil.ParseInt(dataCols[2].Trim());
             float moveSpeed = CSVParseUtil.ParseFloat(dataCols[3].Trim());
             float attackDamage = CSVParseUtil.ParseFloat(dataCols[4].Trim());
-            float attackRange = CSVParseUtil.ParseFloat(dataCols[5].Trim());
-            float traceRange = CSVParseUtil.ParseFloat(dataCols[6].Trim());
-            EnemyType type = CSVParseUtil.ParseEnum(dataCols[7], EnemyType.Melee);
+            float attackDuration = CSVParseUtil.ParseFloat(dataCols[5].Trim());
+            float attackRange = CSVParseUtil.ParseFloat(dataCols[6].Trim());
+            float traceRange = CSVParseUtil.ParseFloat(dataCols[7].Trim());
+            EnemyType type = CSVParseUtil.ParseEnum(dataCols[8], EnemyType.Melee);
 
             // SO 생성
             string soPath = $"{SoFolderPath}/{id}.asset";
@@ -85,7 +86,7 @@ public static class EnemyCSVImporter
             }
 
             // CSV 값 적용
-            enemyData.ApplyCSVdata(id, name, maxHp, moveSpeed, attackDamage, attackRange, traceRange, type);
+            enemyData.ApplyCSVdata(id, name, maxHp, moveSpeed, attackDamage, attackDuration, attackRange, traceRange, type);
         }
 
         // 에셋 저장 및 리프레시
