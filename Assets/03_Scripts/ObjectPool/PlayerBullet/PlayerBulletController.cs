@@ -52,7 +52,6 @@ public class PlayerBulletController : MonoBehaviour
         {
             // 대상에 데미지 주기
             damagable.TakeDamage(_bulletDamage);
-
         }
 
         // 충돌 후 총알 반환

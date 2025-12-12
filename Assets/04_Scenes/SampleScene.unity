@@ -170,6 +170,37 @@ MonoBehaviour:
   _camera: {fileID: 519420031}
   _bodyRenderer: {fileID: 729067867}
   _gunRenderer: {fileID: 948649912}
+--- !u!1 &277749157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 277749158}
+  m_Layer: 6
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &277749158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277749157}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.61, y: 0.81, z: 0}
+  m_LocalScale: {x: 1.86208, y: 0.26402, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079164743}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &326342825
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,12 +389,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f0fb1c26af7e549acb06f797283ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRadius: 2
   _targetLayer:
     serializedVersion: 2
-    m_Bits: 0
-  _attackEffectPrefab: {fileID: 0}
-  _attackEffectDuration: 0.5
+    m_Bits: 64
+  _firePoint: {fileID: 277749158}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,7 +1095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c845bd461fdb1864ba2cbf6bd300ecc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRadius: 0.7
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -1195,7 +1223,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 277749158}
   m_Father: {fileID: 466547129}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2079164744

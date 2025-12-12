@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class EnemyBulletController : MonoBehaviour
@@ -7,6 +8,11 @@ public class EnemyBulletController : MonoBehaviour
     [Header("Bullet Setting")]
     [SerializeField] private float _bulletLifeTime = 1f;
 
+    [Header("Attack Effect Setting")]
+    [SerializeField] private GameObject _attackEffectPrefab;
+    [SerializeField] private float _attackEffectDuration = 0.5f;
+
+    private bool _applyEffect;
     private Vector2 _shootDirection;
     private float _bulletSpeed;
     private int _bulletDamage;
@@ -47,12 +53,22 @@ public class EnemyBulletController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        _applyEffect = false;
+
         // 총알에 맞은 대상이 공격 받을 수 있는 대상이면
         if (collision.TryGetComponent<IDamagable>(out var damagable))
         {
             // 대상에 데미지 주기
             damagable.TakeDamage(_bulletDamage);
 
+            // 피격 이펙트는 한번만 생성
+            if (_attackEffectPrefab != null && !_applyEffect)
+            {
+                GameObject effect = Instantiate(_attackEffectPrefab, collision.transform.position, Quaternion.identity);
+                Destroy(effect, _attackEffectDuration);
+
+                _applyEffect = true;
+            }
         }
 
         // 충돌 후 총알 반환

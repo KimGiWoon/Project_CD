@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     private EnemyStateMachine _enemyStateMachine;
     private float _traceTimer;
 
-    // 죽음 여부
+    // 상태 여부
     public bool IsDead => _currentHp <= 0;
     // 타겟 여부
     public bool HasTarget => _traceTarget != null;
@@ -37,6 +37,8 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     public Transform Target => _traceTarget;
     public int AttackDamage => _attackDamage;
+    public float AttackRange => _attackRange;
+    public float TraceInterval => _traceInterval;
 
     // 상태 인스턴스 보관
     public EnemyIdleState EnemyIdleState { get; private set; }
