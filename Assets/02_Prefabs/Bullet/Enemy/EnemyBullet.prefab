@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletLifeTime: 1
+  _attackEffectPrefab: {fileID: 434275623362012398, guid: 748fe5e0584fede47b7d7c9a07c6f785, type: 3}
+  _attackEffectDuration: 0.5
 --- !u!70 &8535862358099253277
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

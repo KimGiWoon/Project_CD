@@ -16,6 +16,7 @@ public class EnemyAttackState : EnemyBaseState
     public override void Enter()
     {
         _attackTime = 0f;
+        _enemyContoller.MoveStop();
     }
 
     public override void Update()
@@ -41,13 +42,20 @@ public class EnemyAttackState : EnemyBaseState
             return;
         }
 
-        _attackTime += Time.deltaTime;
+        // 공격 범위 밖이면 플레이어 추적
+        if (!_enemyContoller.IsAttackPossible())
+        {
+            _enemyContoller.TargetMovement();
+            return;
+        }
 
-        // 플레이어 추적
-        _enemyContoller.TargetMovement();
+        // 공격하면 정지
+        _enemyContoller.MoveStop();
+
+        _attackTime += _enemyContoller.TraceInterval;
 
         // 쿨타임 경과 후 재공격
-        if (_attackTime >= _attackDelay - 1.95f)
+        if (_attackTime >= _attackDelay)
         {
             _attackTime = 0f;
 
