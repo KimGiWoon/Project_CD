@@ -46,7 +46,7 @@ public class GunController : MonoBehaviour
         Vector2 fireDir = GetMouseDirection();
 
         // 풀에서 총알 꺼내오기
-        BulletController bullet = BulletPoolManager.Instance.GetBullet();
+        PlayerBulletController bullet = BulletPoolManager.Instance.PlayerGetBullet();
 
         // 총알이 없으면 실행하지 않음
         if (bullet == null) return;
@@ -56,7 +56,7 @@ public class GunController : MonoBehaviour
         bullet.transform.rotation = _firePoint.rotation;
 
         // 총알 공격력 초기화
-        if (bullet.TryGetComponent<BulletController>(out var bulletDamage))
+        if (bullet.TryGetComponent<PlayerBulletController>(out var bulletDamage))
         {
             bulletDamage.Init(fireDir, _weaponData.BulletSpeed, _weaponData.BulletDamage);
         }

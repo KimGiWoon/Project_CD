@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+public class EnemyBulletController : MonoBehaviour
 {
     [Header("Bullet Setting")]
     [SerializeField] private float _bulletLifeTime = 1f;
@@ -12,12 +12,12 @@ public class BulletController : MonoBehaviour
     private int _bulletDamage;
     private float _timer;
 
-    private BulletPoolManager _bulletPool;
+    private BulletPoolManager _enemyBulletPool;
 
     // 반환 풀 지정
     public void SetPool(BulletPoolManager bulletPool)
     {
-        _bulletPool = bulletPool;
+        _enemyBulletPool = bulletPool;
     }
 
     // 총알 생성시 초기화
@@ -41,7 +41,7 @@ public class BulletController : MonoBehaviour
         if( _timer >= _bulletLifeTime)
         {
             // 생성 시간 지나면 총알 반납
-            _bulletPool.ReturnBullet(this);
+            _enemyBulletPool.EnemyReturnBullet(this);
         }
     }
 
@@ -56,6 +56,6 @@ public class BulletController : MonoBehaviour
         }
 
         // 충돌 후 총알 반환
-        _bulletPool?.ReturnBullet(this);
+        _enemyBulletPool?.EnemyReturnBullet(this);
     }
 }
