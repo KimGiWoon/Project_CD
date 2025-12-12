@@ -34,9 +34,6 @@ public class EnemyAttackState : EnemyBaseState
             return;
         }
 
-        // 타겟과의 현재 거리
-        float distSqr = _enemyContoller.GetTargetDistanceSqr();
-
         // 타겟이 있으나 공격 범위 밖이면 TraceState 상태로 전환
         if (!_enemyContoller.IsAttackPossible())
         {
@@ -50,7 +47,7 @@ public class EnemyAttackState : EnemyBaseState
         _enemyContoller.TargetMovement();
 
         // 쿨타임 경과 후 재공격
-        if (_attackTime >= _attackDelay)
+        if (_attackTime >= _attackDelay - 1.95f)
         {
             _attackTime = 0f;
 
@@ -61,6 +58,6 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void Exit()
     {
-        
+        _enemyContoller.MoveStop();
     }
 }
