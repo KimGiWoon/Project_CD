@@ -15,6 +15,9 @@ public class EnemyMeleeAttack : EnemyBaseAttack
     // 공격 반경 프로퍼티
     public float AttackRadius => _attackRadius;
 
+    // 이펙트 적용 확인
+    private bool _applyEffect;
+
     public override void AttackExcute(EnemyController controller)
     {
         if (controller == null) return;
@@ -31,6 +34,8 @@ public class EnemyMeleeAttack : EnemyBaseAttack
             return;
         }
 
+        _applyEffect = false;
+
         // 공격 범위안에 있는 타겟 공격
         foreach (var hit in attackTarget)
         {
@@ -40,10 +45,12 @@ public class EnemyMeleeAttack : EnemyBaseAttack
                 damagable.TakeDamage(controller.AttackDamage);
 
                 // 피격 이펙트가 있으면 한번만 생성
-                if (_attackEffectPrefab != null)
+                if (_attackEffectPrefab != null && !_applyEffect)
                 {
                     GameObject effect = Instantiate(_attackEffectPrefab, hit.transform.position, Quaternion.identity);
                     Destroy(effect, _attackEffectDuration);
+
+                    _applyEffect = true;
                 }
             }
         }

@@ -11,6 +11,9 @@ public class EnemyController : MonoBehaviour, IDamagable
     [SerializeField] private Transform _traceTarget;
     [SerializeField] private float _traceInterval = 0.1f;
 
+    [Header("Attack Setting")]
+    [SerializeField] private EnemyBaseAttack _enemyTypeAttack;
+
     // 스탯 데이터
     private int _currentHp;
     private float _moveSpeed;
@@ -199,15 +202,20 @@ public class EnemyController : MonoBehaviour, IDamagable
         return diff.sqrMagnitude <= AttackRangeSqr;
     }
 
-    // 공격
+    // 플레이어 공격
     public void Attack()
     {
+        if (_enemyTypeAttack == null) return;
 
+        // 공격
+        _enemyTypeAttack?.AttackExcute(this);
     }
 
     // 데미지 받음
     public void TakeDamage(int damage)
     {
+        if (IsDead) return;
+
         // 현재 체력이 -로 떨어지지 않게 조정
         _currentHp = Mathf.Max(_currentHp - damage, 0);
         Debug.Log($"몬스터가 공격을 받았습니다! 남은 체력 : {_currentHp}/{_enemyDataSO.MaxHp}");
@@ -223,6 +231,18 @@ public class EnemyController : MonoBehaviour, IDamagable
     {
         // DeadState 상태로 전환
         _enemyStateMachine.ChangeState(EnemyDeadState);
+    }
+
+    // 에디터에서 범위 확인용
+    private void OnDrawGizmosSelected()
+    {
+        // 추적 범위
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _traceRange);
+
+        // 공격 모든 범위
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
     }
 
 }
