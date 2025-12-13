@@ -623,6 +623,9 @@ MonoBehaviour:
     _currentHp: 0
     _moveSpeed: 5
   _gunController: {fileID: 948649910}
+  _dashSpeed: 10
+  _dashDuration: 0.3
+  _dashCoolTime: 2
 --- !u!58 &613101768
 CircleCollider2D:
   m_ObjectHideFlags: 0

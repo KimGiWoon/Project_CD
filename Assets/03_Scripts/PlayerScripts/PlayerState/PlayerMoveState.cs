@@ -15,6 +15,13 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void Update()
     {
+        // 대쉬 입력이 있으면 DashState로 상태 전환
+        if (_playerController.IsDash && _playerController.CanDash)
+        {
+            _playerStateMachine.ChangeState(_playerController.PlayerDashState);
+            return;
+        }
+
         // 이동 입력이 없으면 IdleState로 상태 전환
         if (!_playerController.HasMoveInput)
         {
