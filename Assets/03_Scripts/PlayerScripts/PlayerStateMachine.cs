@@ -20,6 +20,7 @@ public class PlayerStateMachine
 
         _currentState?.Exit();  // 현재 상태 끝
         _currentState = changeState;    // 변경 요청 상태를 현재 상태로 변경
+        Debug.Log($"플레이어의 상태 : {_currentState}");
         _currentState?.Enter(); // 현재 상태 시작
     }
 

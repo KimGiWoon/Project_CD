@@ -10,20 +10,36 @@ public class PlayerController : MonoBehaviour, IDamagable
     [Header("Gun Setting")]
     [SerializeField] private GunController _gunController;
 
+    [Header("Dash Setting")]
+    [SerializeField] private float _dashSpeed = 10f;
+    [SerializeField] private float _dashDuration = 0.5f;
+    [SerializeField] private float _dashCoolTime = 2f;
+
+    // 대쉬 사용한 시간 저장 변수
+    private float _lastDashTime = -999f;
+
     private Rigidbody2D _rigid;
     private Vector2 _moveInput;
     private PlayerStateMachine _playerStateMachine;
+    private bool _isDash;
 
     // 입력 프로퍼티 
     public Vector2 MoveInput => _moveInput;
     public bool HasMoveInput => _moveInput.sqrMagnitude > 0.01f;
     public bool AttackInput { get; private set; }
 
+    // 대쉬 프로퍼티
+    public bool IsDash => _isDash;
+    public float DashSpeed => _dashSpeed;
+    public float DashDuration => _dashDuration;
+    public bool CanDash => Time.time >= _lastDashTime + _dashCoolTime;
+
     // 상태 인스턴스 보관
     public PlayerIdleState PlayerIdleState { get; private set; }
     public PlayerMoveState PlayerMoveState { get; private set; }
     public PlayerAttackState PlayerAttackState { get; private set; }
     public PlayerDeadState PlayerDeadState { get; private set; }
+    public PlayerDashState PlayerDashState { get; private set; }
 
     // 무기의 공격 딜레이
     public float AttackDelay => _gunController.AttackDelay;
@@ -53,6 +69,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         PlayerMoveState = new PlayerMoveState(this, _playerStateMachine);
         PlayerAttackState = new PlayerAttackState(this, _playerStateMachine);
         PlayerDeadState = new PlayerDeadState(this, _playerStateMachine);
+        PlayerDashState = new PlayerDashState(this, _playerStateMachine);
     }
 
     private void Start()
@@ -88,6 +105,12 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         // 공격 입력
         AttackInput = Input.GetMouseButtonDown(0);
+
+        // 움직이면서 대쉬할 수 있으면 대쉬
+        if (Input.GetKeyDown(KeyCode.Space) && _moveInput != Vector2.zero && CanDash)
+        {
+            _isDash = true;
+        }
     }
 
     // 플레이어 이동
@@ -98,6 +121,34 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     // 이동 정지
     public void StopMove()
+    {
+        _rigid.velocity = Vector2.zero;
+    }
+
+    // 대쉬 상태 전환
+    public void DashStateChange()
+    {
+        _isDash = false;
+    }
+
+    // 대쉬 시작
+    public void StartDash(Vector2 dashdir)
+    {
+        // 대쉬 사용한 시간 저장
+        _lastDashTime = Time.time;
+
+        // 대쉬 이동 방향
+        _rigid.velocity = dashdir * _dashSpeed;
+    }
+
+    // 대쉬 이동
+    public void MoveDash(Vector2 dashdir)
+    {
+        _rigid.velocity = dashdir * _dashSpeed;
+    }
+
+    // 대쉬 종료
+    public void FinishDash()
     {
         _rigid.velocity = Vector2.zero;
     }
