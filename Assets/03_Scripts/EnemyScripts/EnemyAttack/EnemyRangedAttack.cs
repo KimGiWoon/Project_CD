@@ -6,14 +6,13 @@ public class EnemyRangedAttack : EnemyBaseAttack
 {
     [Header("Ranged Attack Setting")]
     [SerializeField] private LayerMask _targetLayer;
-    [SerializeField] private Transform _firePoint;
 
     public override void AttackExcute(EnemyController controller)
     {
         if (controller == null) return;
 
         // 공격 기준 위치
-        Vector2 center = _firePoint.position;
+        Vector2 center = transform.position;
 
         // 법위 내의 콜라이더 탐색
         Collider2D[] attackTarget = Physics2D.OverlapCircleAll(center, controller.AttackRange, _targetLayer);
